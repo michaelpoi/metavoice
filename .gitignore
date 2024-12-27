@@ -1,0 +1,8 @@
+.venv/
+venv/
+speaches/
+model/
+notes/
+.idea/
+__pycache__/
+.env
