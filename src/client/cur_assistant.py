@@ -6,7 +6,7 @@ from assistant.manager import CommandManager
 from assistant.assistant import Assistant
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-configure_settings(debug=False,
+configure_settings(debug=True,
                    input_language='ru-Ru',
                    output_language='ru',
                    modules=['greets', 'files'],

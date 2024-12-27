@@ -50,10 +50,10 @@ class VoiceAssistantChatApp:
 
     def process_text_command(self):
         user_input = self.entry_box.get()
-        if user_input.strip():
+        if stripped := user_input.strip():
             self.chat_display.configure(state="normal")
-            self.chat_display.insert(END, f"You: {user_input}\n")
-            response = voice_assistant.process_command(user_input)
+            self.chat_display.insert(END, f"You: {stripped}\n")
+            response = voice_assistant.process_command(stripped)
             self.chat_display.insert(END, f"Voice Assistant: {response}\n")
             self.chat_display.configure(state="disabled")
             self.entry_box.delete(0, END)

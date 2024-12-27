@@ -4,7 +4,7 @@ from assistant.settings.default_settings import settings
 import uuid
 
 class WriteCommand(ICommand):
-    find_patterns = ['write', 'напиши']
+    find_patterns = ['write {content:.+}(?= as)( as {filename})?']
 
     def write(self, filename, content):
         try:
@@ -14,14 +14,10 @@ class WriteCommand(ICommand):
         except Exception as e:
             self.respond(f"{error_responses()} {str(e)}")
 
-    def handle(self, text):
-        if text.count('as'):
-            parts = text.split(' as ')
-            content = parts[0][len('write '):]
-            filename = parts[1] + '.txt'
-            self.write(filename, content)
-
+    def handle(self, text, **kwargs):
+        content = kwargs.get('content')
+        if filename := kwargs.get('filename', None):
+            self.write(f"{filename}.txt", content)
         else:
             filename = str(uuid.uuid4()) + '.txt'
-            content = text[len('write '):]
             self.write(filename, content)

@@ -14,8 +14,8 @@ class CommandManager:
     @staticmethod
     def find_and_execute(pattern):
         for name,command in CommandManager.show().items():
-            if command.find(pattern):
-                return command.handle(pattern)
+            if (var_dict := command.find_regex(pattern)) is not None:
+                return command.handle(pattern, **var_dict)
         raise ValueError('Command not found')
 
     @staticmethod

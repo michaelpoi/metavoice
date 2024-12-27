@@ -13,7 +13,7 @@ class Assistant:
         while True:
             text = input("Your speech: ")
             if text:
-                CommandManager.find_and_execute(text.lower())
+                CommandManager.find_and_execute(text)
 
     def production_server(self):
         while True:
@@ -23,7 +23,7 @@ class Assistant:
 
     def process_command(self, text):
         try:
-            return CommandManager.find_and_execute(text.lower())
+            return CommandManager.find_and_execute(text)
         except ValueError as e:
             print(e)
             return "Command not found"
