@@ -1,13 +1,17 @@
+import os
+
 from assistant.command.icommand import ICommand
 from assistant.storage import consistent_storage
-from gettext import gettext as _
-
+from assistant.core.i18n import _
 
 class HelloCommand(ICommand):
-    find_patterns = ['(hello|hi|hey)']
+    find_patterns = {
+        'en':['(hello|hi|hey)'],
+        'ru':['(привет|здорово)']
+    }
     def handle(self, text, **kwargs):
-        if not consistent_storage.exists('name'):
-            return self.respond("Hi sir")
+        if not consistent_storage.exists('name') or True:
+            return self.respond(_("Hi sir"))
         else:
             return self.respond(f"Hi {consistent_storage.get('name')}")
 
@@ -20,7 +24,10 @@ class SetNameCommand(ICommand):
        return self.respond(f"{_('Hello')} {name}!")
 
 class GetNameCommand(ICommand):
-    find_patterns = ['who am I', 'кто я', 'как меня зовут']
+    find_patterns = {
+        'en':['who am I', 'what is my name'],
+        'ru':['кто я', 'как меня зовут']
+    }
 
     def handle(self, text, **kwargs):
         if not consistent_storage.exists('name'):

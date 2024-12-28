@@ -1,13 +1,16 @@
 import json
 
 from assistant.manager import CommandManager
-from assistant.listener import record_audio, recognize_speech, get_voice_input
+from assistant.listener import get_voice_input
 from assistant.settings.default_settings import settings
+from assistant.translate import merge_translations
 
 
 class Assistant:
     def __init__(self):
-        pass
+        if settings.modules and settings.use_i18n:
+            merge_translations(package_names=settings.modules, language=settings.output_language)
+
 
     def debug_server(self):
         while True:

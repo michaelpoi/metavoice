@@ -1,9 +1,13 @@
+import os
+
 from assistant.command.icommand import ICommand
 from assistant.manager import CommandManager
+from assistant.core.i18n import _
+
 
 class Helper(ICommand):
     def helper(self) -> str:
-        return "Write help to see documentation"
+        return _("Write help to see documentation")
 
     find_patterns = ['help', 'помощь']
 

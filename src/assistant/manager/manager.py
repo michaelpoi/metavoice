@@ -1,4 +1,5 @@
 from assistant.command.icommand import ICommand
+from assistant.settings.default_settings import settings
 import importlib
 
 class CommandManager:
@@ -22,7 +23,7 @@ class CommandManager:
     def helper():
         documentation_dict = {}
         for name, command in CommandManager.show().items():
-            documentation_dict[name] = {"triggers": command.find_patterns,
+            documentation_dict[name] = {"triggers": command.get_find_patterns()[settings.input_language],
                                         "docs":command.helper()}
 
         return documentation_dict

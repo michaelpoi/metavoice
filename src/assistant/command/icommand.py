@@ -1,7 +1,9 @@
+import os
 import re
-
+import gettext
 from assistant.speaker import Speaker
 from assistant.settings.default_settings import settings
+
 
 
 class CommandMeta(type):
@@ -18,9 +20,9 @@ class ICommand(metaclass=CommandMeta):
     def handle(self, text:str, **kwargs):
         pass
 
-    find_patterns:list[str] = []
+    find_patterns:dict[str, list[str]] = {}
 
-    complied_patterns:list[re.Pattern] = []
+    complied_patterns:[re.Pattern] = []
 
     def _compile_pattern(self, pattern:str) -> re.Pattern:
         def replace_placeholder(match):
@@ -36,9 +38,24 @@ class ICommand(metaclass=CommandMeta):
     def helper(self) -> str:
         return 'Undocumented'
 
+    def get_find_patterns(self) -> dict[str, list[str]]|None:
+        patterns =  self.find_patterns
+        if not patterns:
+            return None
+        if isinstance(patterns, str):
+            return {settings.input_language: [patterns]}
+        elif isinstance(patterns, list):
+            return {settings.input_language: patterns}
+        else:
+            return patterns
+
     def find_regex(self, text:str):
         if not self.complied_patterns:
-            self.complied_patterns = [self._compile_pattern(pattern) for pattern in self.find_patterns]
+            active_patterns = self.get_find_patterns()
+            if not active_patterns:
+                return None
+            language_patterns = active_patterns[settings.input_language]
+            self.complied_patterns = [self._compile_pattern(pattern) for pattern in language_patterns]
 
         for pattern in self.complied_patterns:
             match = pattern.search(text)
