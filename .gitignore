@@ -6,3 +6,4 @@ notes/
 .idea/
 __pycache__/
 .env
+merged_locale/
